@@ -1,21 +1,30 @@
-import { AppBar, Avatar, Button, IconButton, Typography } from "@mui/material";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setAuthData } from "../../store/reducers/authSlice";
 import { selectIsAuth } from "../../store/selectors/authSelectors";
 import { selectProfileDetails } from "../../store/selectors/profileSelectors";
+import * as S from "./Header.styles"
 
 export const Header: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const isAuth = useAppSelector(selectIsAuth);
   const { firstname, lastname } = useAppSelector(selectProfileDetails);
 
-  const handleClick = () => {
+  const handleLogin = () => {
     navigate("/login");
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('token')
+    dispatch(setAuthData({isAuth: false, token: ""}))
+    navigate('/login')
+  }
+
   return (
-    <AppBar>
+    <S.AppBar>
       <Typography
         variant="h5"
         component="div"
@@ -24,12 +33,13 @@ export const Header: FC = () => {
         Test task for Interexy
       </Typography>
       {isAuth ? (
-        <IconButton size="large">
+        <>
+        <Button color="inherit" onClick={handleLogout} sx={{mr: 2}}>Log out</Button>
           <Avatar>{`${firstname.at(0)}${lastname.at(0)}`}</Avatar>
-        </IconButton>
+          </>
       ) : (
-        <Button onClick={handleClick}>Log in</Button>
+        <Button color="inherit" onClick={handleLogin} sx={{mr: 2}}>Log in</Button>
       )}
-    </AppBar>
+    </S.AppBar>
   );
 };

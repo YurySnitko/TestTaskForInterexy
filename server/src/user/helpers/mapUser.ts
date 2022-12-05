@@ -1,8 +1,8 @@
 import { UserWithID } from "../types";
 
-export const mapUser = ({ _id, email, firstName, lastName }: UserWithID) => ({
+export const mapUser = ({ _id, email, firstname, lastname }: UserWithID) => ({
   id: _id,
   email,
-  firstName,
-  lastName,
+  firstname,
+  lastname,
 });

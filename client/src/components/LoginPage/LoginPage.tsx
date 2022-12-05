@@ -25,9 +25,13 @@ export const LoginPage: FC = () => {
   } = useForm<LoginFormInputs>({ defaultValues });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    const id = await dispatch(login(data)).unwrap();
+    try {
+      const id = await dispatch(login(data)).unwrap();
     if (id) {
-      navigate("/");
+      navigate("/profile");
+    }
+    } catch (error) {
+      console.log(error);
     }
   };
 

@@ -22,7 +22,7 @@ function App() {
 
     token
       ? dispatch(setAuthData({ token, isAuth: true }))
-      : dispatch(setAuthData({ token: "", isAuth: true }));
+      : dispatch(setAuthData({ token: "", isAuth: false }));
 
     dispatch(initializeFulfilled());
   }, [dispatch]);

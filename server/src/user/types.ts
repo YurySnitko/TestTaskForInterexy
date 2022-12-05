@@ -3,16 +3,16 @@ import { Types } from "mongoose";
 export type User = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
 };
 
 export type UserWithID = {
   _id: Types.ObjectId;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
 };
 
 export type UserInstanceMethods = {

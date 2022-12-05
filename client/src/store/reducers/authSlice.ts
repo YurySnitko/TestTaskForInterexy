@@ -6,18 +6,19 @@ import { SignUpFormInputs } from "../../components/SignUpPage/SignUpPage.types";
 export const login = createAsyncThunk(
   "auth/login",
   async (loginData: LoginFormInputs) => {
-    const { token } = await authAPI.login(loginData);
-    sessionStorage.setItem("token", token);
-    return token;
+    const data = await authAPI.login(loginData);
+    data && sessionStorage.setItem("token", data.token);
+    return data ? data.token : "";
   }
 );
 
 export const signup = createAsyncThunk(
   "auth/signup",
   async (signUpData: SignUpFormInputs) => {
-    const { token } = await authAPI.signup(signUpData);
-    sessionStorage.setItem("token", token);
-    return token;
+    const data = await authAPI.signup(signUpData);
+
+    data && sessionStorage.setItem("token", data.token);
+    return data ? data.token : "";
   }
 );
 
@@ -56,7 +57,12 @@ export const authSlice = createSlice({
         state.token = action.payload;
         state.isAuth = true;
         state.isLoading = false;
-      });
+      })
+      .addCase(login.rejected, (state) => {
+        state.isAuth = false;
+        state.isLoading = false;
+      })
+      
 
     builder
       .addCase(signup.pending, (state) => {
@@ -66,7 +72,11 @@ export const authSlice = createSlice({
         state.token = action.payload;
         state.isAuth = true;
         state.isLoading = false;
-      });
+      })
+      .addCase(signup.rejected, (state) => {
+        state.isAuth = false;
+        state.isLoading = false;
+      })
   },
 });
 

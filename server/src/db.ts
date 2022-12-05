@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 export const connectDb = async () => {
-  mongoose.Promise = global.Promise;
-  mongoose.connection.on("error", (error) => console.log(error));
+  dotenv.config()
   await mongoose.connect(`${process.env.MONGODB_URL}`);
+  mongoose.connection.on("error", (error) => console.log(error));
+  mongoose.Promise = global.Promise;
 };
