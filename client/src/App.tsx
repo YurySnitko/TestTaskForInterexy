@@ -7,8 +7,8 @@ import { SignUpPage } from "./components/SignUpPage/SignUpPage";
 import { LoginPage } from "./components/LoginPage/LoginPage";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { useEffect } from "react";
-import { initializeFulfilled } from "./store/reducers/appSlice";
 import { setAuthData } from "./store/reducers/authSlice";
+import { initializeFulfilled } from "./store/reducers/appSlice";
 import { selectIsAppInitialized } from "./store/selectors/appSelectors";
 import { Loader } from "./components/Loader/Loader";
 import { ProfilePage } from "./components/ProfilePage/ProfilePage";
@@ -18,12 +18,8 @@ function App() {
   const isAppInitialized = useAppSelector(selectIsAppInitialized);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-
-    token
-      ? dispatch(setAuthData({ token, isAuth: true }))
-      : dispatch(setAuthData({ token: "", isAuth: false }));
-
+    const token = sessionStorage.getItem("token") || "";
+    dispatch(setAuthData({ token, isAuth: !!token }));
     dispatch(initializeFulfilled());
   }, [dispatch]);
 

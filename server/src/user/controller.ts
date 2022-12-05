@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { MongooseError } from "mongoose";
+import { getToken } from "../auth/getToken";
 import { ServerError } from "../ServerError";
 import { mapUser } from "./helpers/mapUser";
 import { User } from "./types";
@@ -13,8 +13,7 @@ const signup = async ({ firstname, lastname, email, password }: User) => {
       password,
     });
 
-  const body = { _id: user._id, email: user.email };
-  const token = jwt.sign({ user: body }, `${process.env.SECRET}`);
+  const token = getToken(user._id, user.email)
 
   return token;
 };
@@ -32,8 +31,7 @@ const login = async (email: string, password: string) => {
     throw new ServerError("Wrong password", 400);
   }
 
-  const body = { _id: user._id, email: user.email };
-  const token = jwt.sign({ user: body }, `${process.env.SECRET}`);
+  const token = getToken(user._id, user.email)
 
   return token;
 };

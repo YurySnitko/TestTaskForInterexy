@@ -1,11 +1,11 @@
-import { Avatar, Button, IconButton, Typography } from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setAuthData } from "../../store/reducers/authSlice";
 import { selectIsAuth } from "../../store/selectors/authSelectors";
 import { selectProfileDetails } from "../../store/selectors/profileSelectors";
-import * as S from "./Header.styles"
+import * as S from "./Header.styles";
 
 export const Header: FC = () => {
   const navigate = useNavigate();
@@ -18,10 +18,14 @@ export const Header: FC = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token')
-    dispatch(setAuthData({isAuth: false, token: ""}))
-    navigate('/login')
-  }
+    sessionStorage.removeItem("token");
+    dispatch(setAuthData({ isAuth: false, token: "" }));
+    navigate("/login");
+  };
+
+  const goToProfilePage = () => {
+    navigate("/profile");
+  };
 
   return (
     <S.AppBar>
@@ -34,11 +38,17 @@ export const Header: FC = () => {
       </Typography>
       {isAuth ? (
         <>
-        <Button color="inherit" onClick={handleLogout} sx={{mr: 2}}>Log out</Button>
-          <Avatar>{`${firstname.at(0)}${lastname.at(0)}`}</Avatar>
-          </>
+          <Button color="inherit" onClick={handleLogout} sx={{ mr: 2 }}>
+            Log out
+          </Button>
+          <Avatar onClick={goToProfilePage}>{`${firstname.at(0)}${lastname.at(
+            0
+          )}`}</Avatar>
+        </>
       ) : (
-        <Button color="inherit" onClick={handleLogin} sx={{mr: 2}}>Log in</Button>
+        <Button color="inherit" onClick={handleLogin} sx={{ mr: 2 }}>
+          Log in
+        </Button>
       )}
     </S.AppBar>
   );

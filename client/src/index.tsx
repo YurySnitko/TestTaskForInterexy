@@ -6,6 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import { injectStore } from "./api/api";
+
+injectStore(store);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -9,6 +9,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { ControlledTextField } from "../../controls/ControlledTextField/ControlledTextField";
 import * as S from "./LoginPage.styles";
 import { LoginFormInputs } from "./LoginPage.types";
+import { ControlledCheckbox } from "../../controls/ControlledCheckbox/ControlledCheckbox";
 
 const defaultValues = {
   email: "",
@@ -26,10 +27,8 @@ export const LoginPage: FC = () => {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      const id = await dispatch(login(data)).unwrap();
-    if (id) {
-      navigate("/profile");
-    }
+      const token = await dispatch(login(data)).unwrap();
+      token && navigate("/profile");
     } catch (error) {
       console.log(error);
     }
@@ -59,6 +58,11 @@ export const LoginPage: FC = () => {
               type={field}
             />
           ))}
+          <ControlledCheckbox
+            control={control}
+            name="rememberMe"
+            label="Remember me"
+          />
           <SubmitButton label="Log in" />
         </S.Form>
         <S.NavLinkTextWrapper>

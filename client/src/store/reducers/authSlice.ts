@@ -5,19 +5,18 @@ import { SignUpFormInputs } from "../../components/SignUpPage/SignUpPage.types";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (loginData: LoginFormInputs) => {
-    const data = await authAPI.login(loginData);
-    data && sessionStorage.setItem("token", data.token);
+  async ({email, password, rememberMe}: LoginFormInputs) => {
+    const data = await authAPI.login({email, password});
+    data && rememberMe && sessionStorage.setItem("token", data.token);
     return data ? data.token : "";
   }
 );
 
 export const signup = createAsyncThunk(
   "auth/signup",
-  async (signUpData: SignUpFormInputs) => {
-    const data = await authAPI.signup(signUpData);
-
-    data && sessionStorage.setItem("token", data.token);
+  async ({firstname, lastname, email, password, rememberMe}: SignUpFormInputs) => {
+    const data = await authAPI.signup({firstname, lastname, email, password});
+    data && rememberMe && sessionStorage.setItem("token", data.token);
     return data ? data.token : "";
   }
 );

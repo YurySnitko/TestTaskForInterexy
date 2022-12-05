@@ -1,4 +1,10 @@
-import { Button, List, ListItem, ListItemText, Typography } from "@mui/material";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { FC, useEffect } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -19,16 +25,19 @@ export const ProfilePage: FC = () => {
   const profileDetails = useAppSelector(selectProfileDetails);
 
   useEffect(() => {
-    dispatch(me());
-  }, [dispatch]);
+    (async () => {
+      const res = await dispatch(me()).unwrap();
+      !res && navigate("/login");
+    })();
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     !isAuth && redirect("/login");
   }, [isAuth]);
 
   const handleClick = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <>
@@ -52,7 +61,9 @@ export const ProfilePage: FC = () => {
               ))}
             </List>
           </S.Paper>
-          <Button variant="contained" size="large" onClick={handleClick}>Home Page</Button>
+          <Button variant="contained" size="large" onClick={handleClick}>
+            Home Page
+          </Button>
         </S.Container>
       ) : (
         <Loader />
