@@ -8,15 +8,15 @@ export const ControlledTextField = <T extends FieldValues>({
   rules,
   ...rest
 }: ControlledTextFieldProps<T>) => {
-  const {
-    field: { onChange, value, ...restFieldProps },
-  } = useController<T>({ name, control, rules });
+  const { field } = useController<T>({ name, control, rules });
 
   return (
     <TextField
-      onChange={onChange}
-      value={value}
-      {...restFieldProps}
+      onChange={field.onChange}
+      value={field.value}
+      name={field.name}
+      onBlur={field.onBlur}
+      inputRef={field.ref}
       {...rest}
     />
   );

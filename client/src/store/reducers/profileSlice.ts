@@ -1,11 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { profileAPI } from "../../api/profileAPI";
 
-export const me = createAsyncThunk("profile/me", async () => {
-  const profileDetails = await profileAPI.me();
-  return profileDetails;
-});
-
 type ProfileState = {
   profileDetails: ProfileDetails;
   isLoading: boolean;
@@ -26,6 +21,11 @@ const initialState: ProfileState = {
   isLoading: false,
 };
 
+export const me = createAsyncThunk("profile/me", async () => {
+  const profileDetails = await profileAPI.me();
+  return profileDetails 
+});
+
 export const profileSlice = createSlice({
   name: "auth",
   initialState,
@@ -41,8 +41,8 @@ export const profileSlice = createSlice({
       .addCase(me.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(me.fulfilled, (state, action: PayloadAction<ProfileDetails>) => {
-        state.profileDetails = action.payload;
+      .addCase(me.fulfilled, (state, action: PayloadAction<ProfileDetails | undefined>) => {
+        state.profileDetails = action.payload ?? initialState.profileDetails;
         state.isLoading = false;
       });
   },

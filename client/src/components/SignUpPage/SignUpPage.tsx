@@ -9,12 +9,14 @@ import { useAppDispatch } from "../../store/hooks";
 import { ControlledTextField } from "../../controls/ControlledTextField/ControlledTextField";
 import * as S from "./SignUpPage.styles";
 import { SignUpFormInputs } from "./SignUpPage.types";
+import { ControlledCheckbox } from "../../controls/ControlledCheckbox/ControlledCheckbox";
 
 const defaultValues = {
   firstname: "",
   lastname: "",
   email: "",
   password: "",
+  rememberMe: false,
 };
 
 export const SignUpPage: FC = () => {
@@ -27,8 +29,8 @@ export const SignUpPage: FC = () => {
   } = useForm<SignUpFormInputs>({ defaultValues });
 
   const onSubmit: SubmitHandler<SignUpFormInputs> = async (data) => {
-    const id = await dispatch(signup(data)).unwrap();
-    if (id) {
+    const token = await dispatch(signup(data)).unwrap();
+    if (token) {
       navigate("/profile");
     }
   };
@@ -41,22 +43,31 @@ export const SignUpPage: FC = () => {
           <AccountCircleRounded color="primary" fontSize="inherit" />
         </S.IconContainer>
         <S.Form onSubmit={handleSubmit(onSubmit)}>
-          {Object.keys(defaultValues).map((field) => (
-            <ControlledTextField
-              key={field}
-              control={control}
-              name={field as keyof SignUpFormInputs}
-              label={field.at(0)?.toUpperCase() + field.slice(1)}
-              rules={{
-                required: { value: true, message: "field is required" },
-              }}
-              error={!!errors[field as keyof SignUpFormInputs]}
-              helperText={errors[field as keyof SignUpFormInputs]?.message}
-              fullWidth
-              size="small"
-              type={field === "email" || field === "password" ? field : "text"}
-            />
-          ))}
+          {Object.keys(defaultValues)
+            .filter((key) => key !== "rememberMe")
+            .map((field) => (
+              <ControlledTextField
+                key={field}
+                control={control}
+                name={field as keyof SignUpFormInputs}
+                label={field.at(0)?.toUpperCase() + field.slice(1)}
+                rules={{
+                  required: { value: true, message: "field is required" },
+                }}
+                error={!!errors[field as keyof SignUpFormInputs]}
+                helperText={errors[field as keyof SignUpFormInputs]?.message}
+                fullWidth
+                size="small"
+                type={
+                  field === "email" || field === "password" ? field : "text"
+                }
+              />
+            ))}
+          <ControlledCheckbox
+            control={control}
+            name="rememberMe"
+            label="Remember me"
+          />
           <SubmitButton label="Sign Up" />
         </S.Form>
         <S.NavLinkTextWrapper>
