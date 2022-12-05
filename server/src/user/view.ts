@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import controller from "./controller";
 
 export const signup = async (req: Request, res: Response) => {
-  const user = await controller.signup(req.body);
+  const token = await controller.signup(req.body);
 
-  res.json({ user });
+  res.json({ token });
 };
 
 export const login = async (req: Request, res: Response) => {
