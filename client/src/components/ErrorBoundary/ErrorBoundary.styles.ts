@@ -18,4 +18,15 @@ export const Paper = styled(MuiPaper)`
   padding: 30px 50px;
   width: 420px;
   gap: 20px;
+
+  & a {
+    text-decoration: none;
+    color: #1976d2;
+    font-weight: 600;
+  }
+
+  & a:hover {
+    text-decoration: underline;
+    color: #42a5f5;
+  }
 `;

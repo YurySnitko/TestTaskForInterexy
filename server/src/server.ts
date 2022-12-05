@@ -18,9 +18,13 @@ export const startServer = () => {
 
   app.use(
     (err: ServerError, req: Request, res: Response, next: NextFunction) => {
-      res
+      if (err.status === 400) {
+        res.status(400).json({message: "Wrong email or password"})
+      } else {
+        res
         .status(err.status || 500)
-        .send(`<h1>Oops! Something goes wrong...</h1><h4>${err.message}</h4>`);
+        .send(`<h1>Oops! Something goes wrong...</h1><h4>Error message: ${err.message}</h4>`);
+      }
     }
   );
 

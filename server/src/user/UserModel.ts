@@ -12,10 +12,10 @@ const UserSchema = new Schema<User, Model<User, {}, UserInstanceMethods>>({
     type: String,
     required: true,
   },
-  firstName: {
+  firstname: {
     type: String,
   },
-  lastName: {
+  lastname: {
     type: String,
   },
 });

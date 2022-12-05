@@ -12,7 +12,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({ label }) => {
       variant="contained"
       type="submit"
       fullWidth
-      endIcon={isLoading && <CircularProgress />}
+      endIcon={isLoading && <CircularProgress size="small" />}
       disabled={isLoading}
     >
       {label}

@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { LoginFormInputs } from "../components/LoginPage/LoginPage.types";
 import { SignUpFormInputs } from "../components/SignUpPage/SignUpPage.types";
 import { axiosInstance } from "./api";
@@ -8,6 +9,9 @@ type SignUpResponseData = {
 type LoginResponseData = {
   token: string;
 };
+type ResponseErrorData = {
+  message: string
+}
 
 export const authAPI = {
   async signup(signupData: SignUpFormInputs) {
@@ -20,11 +24,18 @@ export const authAPI = {
   },
 
   async login(loginData: LoginFormInputs) {
-    const response = await axiosInstance.post<LoginResponseData>(
-      "login",
-      loginData
-    );
-
-    return response.data;
+    try {
+      const response = await axiosInstance.post<LoginResponseData>(
+        "login",
+        loginData
+      );
+  
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data?.message)
+      }
+      
+    }
   },
 };
